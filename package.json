@@ -1,0 +1,78 @@
+{
+  "name": "mcp-ashby",
+  "version": "1.0.0",
+  "description": "MCP server for public Ashby job boards. Resolve a company to its board, search its openings, read one posting and its pay. No API key required.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "ashby",
+    "jobs",
+    "job-search",
+    "job-board",
+    "ats",
+    "hiring",
+    "careers",
+    "compensation",
+    "no-api-key"
+  ],
+  "homepage": "https://github.com/smeet666/mcp-ashby#readme",
+  "bugs": {
+    "url": "https://github.com/smeet666/mcp-ashby/issues"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://buymeacoffee.com/smeet666"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smeet666/mcp-ashby.git"
+  },
+  "license": "MIT",
+  "author": "Damien Bouissou",
+  "type": "module",
+  "bin": {
+    "mcp-ashby": "dist/index.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./client": {
+      "types": "./dist/ashby/client.d.ts",
+      "import": "./dist/ashby/client.js"
+    }
+  },
+  "files": [
+    "dist",
+    "assets",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "mcpName": "io.github.smeet666/mcp-ashby",
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build:fixtures",
+    "test": "vitest run test/unit",
+    "test:live": "vitest run test/live --testTimeout=90000",
+    "build:fixtures": "node scripts/build-fixtures.mjs",
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build",
+    "start": "node dist/index.js",
+    "inspector": "npx @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}

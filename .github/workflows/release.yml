@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck && npm test
+
+      - name: Build the bundle with its dependencies inside
+        run: |
+          npx tsup --config tsup.bundle.config.ts
+          mkdir -p bundle
+          cp packaging/manifest.json bundle/
+          cp -r assets bundle/assets
+          cp -r dist-bundle bundle/dist
+          cp README.md LICENSE bundle/
+          (cd bundle && zip -qr ../mcp-ashby.mcpb .)
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: mcp-ashby.mcpb
+          generate_release_notes: true

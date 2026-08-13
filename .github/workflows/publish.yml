@@ -1,0 +1,30 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # The npm that mints the OIDC token needs a newer Node than the one
+          # this package requires of its users.
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      # Trusted publishing needs a recent npm CLI, newer than the one Node 20
+      # carries, and it is what mints the OIDC token.
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run typecheck && npm test && npm run build
+      # Trusted publishing: the repository's own identity, with no stored token.
+      - run: npm publish --provenance --access public

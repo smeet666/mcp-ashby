@@ -1,0 +1,61 @@
+name: Publish to the MCP registry
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: The release tag to file, for example v0.1.0
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  file:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read the tag being filed
+        id: tag
+        run: echo "name=${{ inputs.tag || github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+
+      - name: Describe the bundle this tag published
+        env:
+          TAG: ${{ steps.tag.outputs.name }}
+        run: |
+          set -euo pipefail
+          URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/mcp-ashby.mcpb"
+          # Fetched rather than assumed: the registry checks that the address
+          # downloads, and a version left behind serves an older bundle than the
+          # one announced.
+          curl -fsSL "$URL" -o bundle.mcpb
+          SHA=$(sha256sum bundle.mcpb | cut -d' ' -f1)
+          VERSION="${TAG#v}" URL="$URL" SHA="$SHA" node -e '
+            const fs = require("fs");
+            const doc = JSON.parse(fs.readFileSync("server.json", "utf8"));
+            doc.version = process.env.VERSION;
+            doc.packages = [
+              { registryType: "npm", identifier: "mcp-ashby", version: process.env.VERSION,
+                transport: { type: "stdio" } },
+              { registryType: "mcpb", identifier: process.env.URL, version: process.env.VERSION,
+                fileSha256: process.env.SHA, transport: { type: "stdio" } },
+            ];
+            fs.writeFileSync("server.json", JSON.stringify(doc, null, 2) + "\n");
+          '
+          cat server.json
+
+      - name: Install the registry publisher
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
+            | tar xz mcp-publisher
+          chmod +x mcp-publisher
+
+      - name: File the entry under the repository's own identity
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish

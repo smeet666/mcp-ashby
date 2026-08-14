@@ -1,9 +1,12 @@
 name: Publish to npm
 
 on:
+  # A tag pushed by a person starts this. A release cut by a workflow starts
+  # nothing, because GitHub refuses to let one workflow trigger another through
+  # the token it lends them.
+  push:
+    tags: ["v*"]
   workflow_dispatch:
-  release:
-    types: [published]
 
 permissions:
   contents: read

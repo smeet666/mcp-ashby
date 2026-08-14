@@ -1,8 +1,10 @@
 name: Publish to the MCP registry
 
 on:
-  release:
-    types: [published]
+  # Chained on the release build, which is what produces the bundle this files.
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
   workflow_dispatch:
     inputs:
       tag:

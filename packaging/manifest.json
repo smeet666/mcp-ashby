@@ -2,7 +2,7 @@
   "manifest_version": "0.2",
   "name": "mcp-ashby",
   "display_name": "Ashby job boards",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Search public Ashby job boards. No API key required.",
   "long_description": "Ashby hosts one job board per company and publishes no index across them, so every question starts with a company name. This server turns a name into the token that addresses its board, searches the openings of the companies you name, reads one posting in full, lists the wording each board uses, and puts published pay ranges side by side without converting between currencies. It says plainly what it could not find: a token that names nothing, a board publishing nothing, a posting recording no workplace, and a failed read are four different answers, and a company that withholds its pay ranges is never a salary of zero.",
   "author": {

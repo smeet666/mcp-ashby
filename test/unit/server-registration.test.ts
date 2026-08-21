@@ -30,7 +30,8 @@ beforeAll(async () => {
     server?: { connect: (transport: unknown) => Promise<void> };
   };
   const connectable = (typeof created.connect === "function" ? created : created.server) as
-    { connect: (transport: unknown) => Promise<void> } | undefined;
+    | { connect: (transport: unknown) => Promise<void> }
+    | undefined;
   if (connectable === undefined)
     throw new Error("the server exposes no way to connect a transport");
 

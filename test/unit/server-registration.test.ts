@@ -32,8 +32,9 @@ beforeAll(async () => {
   const connectable = (typeof created.connect === "function" ? created : created.server) as
     | { connect: (transport: unknown) => Promise<void> }
     | undefined;
-  if (connectable === undefined)
+  if (connectable === undefined) {
     throw new Error("the server exposes no way to connect a transport");
+  }
 
   const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
   await connectable.connect(serverTransport);
@@ -100,9 +101,13 @@ describe("the seam between the protocol and the reading layer", () => {
     const offenders: string[] = [];
 
     for (const entry of readdirSync(layer)) {
-      if (!entry.endsWith(".ts")) continue;
+      if (!entry.endsWith(".ts")) {
+        continue;
+      }
       const source = readFileSync(join(layer, entry), "utf8");
-      if (source.includes("@modelcontextprotocol/sdk")) offenders.push(entry);
+      if (source.includes("@modelcontextprotocol/sdk")) {
+        offenders.push(entry);
+      }
     }
 
     expect(offenders).toEqual([]);

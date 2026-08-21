@@ -70,20 +70,24 @@ export function countFacets(jobs: readonly RawJob[], wanted: readonly FacetKey[]
     facets[key] = [...counts.entries()]
       .map(([value, count]) => ({ value, count }))
       .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value));
-    if (silent > 0) undeclared[FIELD_OF[key]] = silent;
+    if (silent > 0) {
+      undeclared[FIELD_OF[key]] = silent;
+    }
   }
 
   // Both fields fall silent together, and a caller filtering on either one
   // needs the same count.
   const noWorkplace = jobs.filter((job) => job.workplaceType === null).length;
   if (noWorkplace > 0) {
-    undeclared["workplace_type"] = noWorkplace;
-    undeclared["is_remote"] = noWorkplace;
+    undeclared.workplace_type = noWorkplace;
+    undeclared.is_remote = noWorkplace;
   }
   const withheld = jobs.filter(
     (job) => job.shouldDisplayCompensationOnJobPostings === false,
   ).length;
-  if (withheld > 0) undeclared["compensation"] = withheld;
+  if (withheld > 0) {
+    undeclared.compensation = withheld;
+  }
 
   return {
     totalJobs: jobs.length,
@@ -94,7 +98,9 @@ export function countFacets(jobs: readonly RawJob[], wanted: readonly FacetKey[]
 }
 
 function nonEmpty(value: string | undefined): string | null {
-  if (value === undefined) return null;
+  if (value === undefined) {
+    return null;
+  }
   const trimmed = value.trim();
   return trimmed.length === 0 ? null : trimmed;
 }
@@ -119,7 +125,9 @@ function siblingSpellings(countries: readonly FacetValue[]): string[][] {
     );
     if (sibling) {
       sibling.values.push(entry.value);
-      if (entry.key.length < sibling.key.length) sibling.key = entry.key;
+      if (entry.key.length < sibling.key.length) {
+        sibling.key = entry.key;
+      }
       continue;
     }
     groups.push({ key: entry.key, values: [entry.value] });
@@ -139,7 +147,11 @@ function initials(value: string): string {
     .replace(/[^a-z\s]/g, "")
     .split(/\s+/)
     .filter(Boolean);
-  if (words.length === 0) return "";
-  if (words.length === 1) return words[0] ?? "";
+  if (words.length === 0) {
+    return "";
+  }
+  if (words.length === 1) {
+    return words[0] ?? "";
+  }
   return words.map((word) => word.slice(0, 1)).join("");
 }

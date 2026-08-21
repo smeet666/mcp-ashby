@@ -16,7 +16,9 @@ export async function resolveBoard(name: string, reader: BoardReader): Promise<R
   for (const form of boardForms(name, MAX_BOARD_FORMS)) {
     tried.push(form);
     const probe = await probeBoard(form, reader);
-    if (!probe.exists) continue;
+    if (!probe.exists) {
+      continue;
+    }
     found.push({ board: form, jobCount: probe.jobCount, publishes: probe.jobCount > 0 });
     // Each further form costs a request, a second and sometimes several
     // megabytes, and Ashby answers one board per token.
@@ -33,7 +35,9 @@ export async function resolveBoard(name: string, reader: BoardReader): Promise<R
  * would need.
  */
 export function boardForms(name: string, most: number): string[] {
-  if (most <= 0) return [];
+  if (most <= 0) {
+    return [];
+  }
   const trimmed = name.trim();
   const forms = [
     trimmed,
@@ -46,9 +50,13 @@ export function boardForms(name: string, most: number): string[] {
   ];
   const unique: string[] = [];
   for (const form of forms) {
-    if (form.length === 0 || unique.includes(form)) continue;
+    if (form.length === 0 || unique.includes(form)) {
+      continue;
+    }
     unique.push(form);
-    if (unique.length === most) break;
+    if (unique.length === most) {
+      break;
+    }
   }
   return unique;
 }

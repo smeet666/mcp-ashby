@@ -15,8 +15,12 @@ const silent = (facets: Facets): Record<string, number> =>
   facets.undeclared as unknown as Record<string, number>;
 
 const groupCount = (groups: unknown): number => {
-  if (Array.isArray(groups)) return groups.length;
-  if (groups !== null && typeof groups === "object") return Object.keys(groups as object).length;
+  if (Array.isArray(groups)) {
+    return groups.length;
+  }
+  if (groups !== null && typeof groups === "object") {
+    return Object.keys(groups as object).length;
+  }
   return 0;
 };
 

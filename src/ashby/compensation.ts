@@ -40,7 +40,9 @@ function readComponent(component: RawCompensationComponent): PayComponent {
 /** The components of one type, across every tier of a posting. */
 export function componentsOfType(job: RawJob, type: string): PayComponent[] {
   const pay = readPay(job);
-  if (!pay.published) return [];
+  if (!pay.published) {
+    return [];
+  }
   return pay.tiers.flatMap((tier) => tier.components.filter((c) => c.type === type));
 }
 
@@ -98,7 +100,9 @@ export function comparePay(
     let onThisPeriod = false;
     for (const tier of pay.tiers) {
       for (const part of tier.components) {
-        if (part.type !== component) continue;
+        if (part.type !== component) {
+          continue;
+        }
         carries = true;
         if (part.interval !== interval) {
           otherIntervals.push({ job_id: job.id, interval: part.interval });
@@ -113,10 +117,14 @@ export function comparePay(
           max: part.max,
           currency: part.currency,
         });
-        if (part.currency !== null) currencies.add(part.currency);
+        if (part.currency !== null) {
+          currencies.add(part.currency);
+        }
       }
     }
-    if (!carries && !onThisPeriod) withoutComponent += 1;
+    if (!carries && !onThisPeriod) {
+      withoutComponent += 1;
+    }
   }
 
   return {
@@ -143,22 +151,33 @@ export function clearsFloor(
   const pay = readPay(job);
   // A company withholding its ranges is the one case where nothing at all is
   // stated about pay.
-  if (!pay.published) return { cleared: false, declared: false, comparable: false };
+  if (!pay.published) {
+    return { cleared: false, declared: false, comparable: false };
+  }
   let declared = false;
   let comparable = false;
   for (const tier of pay.tiers) {
     for (const part of tier.components) {
-      if (part.type !== "Salary") continue;
-      if (part.min === null && part.max === null) continue;
+      if (part.type !== "Salary") {
+        continue;
+      }
+      if (part.min === null && part.max === null) {
+        continue;
+      }
       declared = true;
       // A monthly amount and a yearly floor share no scale, and neither do two
       // currencies. The amount is stated, and it stands outside this comparison.
-      if (part.interval !== interval) continue;
-      if (part.currency === null || part.currency.toUpperCase() !== currency.toUpperCase())
+      if (part.interval !== interval) {
         continue;
+      }
+      if (part.currency === null || part.currency.toUpperCase() !== currency.toUpperCase()) {
+        continue;
+      }
       comparable = true;
       const top = part.max ?? part.min ?? 0;
-      if (top >= floor) return { cleared: true, declared: true, comparable: true };
+      if (top >= floor) {
+        return { cleared: true, declared: true, comparable: true };
+      }
     }
   }
   return { cleared: false, declared, comparable };

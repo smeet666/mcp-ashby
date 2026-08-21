@@ -22,7 +22,9 @@ export class AshbyError extends Error {
     super(message);
     this.name = "AshbyError";
     this.code = code;
-    if (allowedValues) this.allowedValues = allowedValues;
+    if (allowedValues) {
+      this.allowedValues = allowedValues;
+    }
   }
 }
 
@@ -51,7 +53,9 @@ const CODES: readonly string[] = [
  * caller a blank failure in place of a coded one.
  */
 export function isAshbyError(error: unknown): error is AshbyError {
-  if (typeof error !== "object" || error === null) return false;
+  if (typeof error !== "object" || error === null) {
+    return false;
+  }
   const candidate = error as { name?: unknown; code?: unknown; message?: unknown };
   return (
     candidate.name === "AshbyError" &&

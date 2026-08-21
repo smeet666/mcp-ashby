@@ -53,13 +53,13 @@ export async function runListFilterValues(
         `The ${found.board} board publishes nothing right now, so there is no wording to report.`,
       );
     }
-    const silent = counted.undeclared["workplace_type"];
+    const silent = counted.undeclared.workplace_type;
     if (silent !== undefined && silent > 0) {
       notes.push(
         `${silent} of ${counted.totalJobs} postings record no workplace at all. They are counted apart, so a facet total is never the size of the board.`,
       );
     }
-    const withheld = counted.undeclared["compensation"];
+    const withheld = counted.undeclared.compensation;
     if (withheld !== undefined && withheld > 0) {
       notes.push(
         `${withheld} of ${counted.totalJobs} postings belong to a company that withholds its pay ranges.`,

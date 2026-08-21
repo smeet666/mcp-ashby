@@ -23,13 +23,13 @@ export async function runResolveBoard(
   args: ResolveBoardArgs,
 ): Promise<CallToolResult> {
   try {
-    args = parseArgs(resolveBoardSchema, args) as typeof args;
-    const resolution = await client.resolveBoard(args.name);
+    const checked = parseArgs(resolveBoardSchema, args) as typeof args;
+    const resolution = await client.resolveBoard(checked.name);
     const notes: string[] = [];
 
     if (resolution.found.length === 0) {
       notes.push(
-        `None of the forms tried addresses an Ashby board. A board token does not always derive from the company name, so this does not prove that ${args.name} is absent from Ashby.`,
+        `None of the forms tried addresses an Ashby board. A board token does not always derive from the company name, so this does not prove that ${checked.name} is absent from Ashby.`,
       );
     }
     for (const board of resolution.found) {

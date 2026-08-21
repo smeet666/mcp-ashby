@@ -18,10 +18,18 @@ const uuid = (n) => `${String(n).padStart(8, "0")}-1111-4222-8333-444444444444`;
 
 const postal = (locality, region, country, postalCode) => {
   const address = {};
-  if (locality !== undefined) address.addressLocality = locality;
-  if (region !== undefined) address.addressRegion = region;
-  if (country !== undefined) address.addressCountry = country;
-  if (postalCode !== undefined) address.postalCode = postalCode;
+  if (locality !== undefined) {
+    address.addressLocality = locality;
+  }
+  if (region !== undefined) {
+    address.addressRegion = region;
+  }
+  if (country !== undefined) {
+    address.addressCountry = country;
+  }
+  if (postalCode !== undefined) {
+    address.postalCode = postalCode;
+  }
   return { postalAddress: address };
 };
 
@@ -56,7 +64,9 @@ const tiered = (tiers) => ({
         maxValue: c.maxValue,
         interval: c.interval,
       };
-      if (c.currencyCode !== null) flat.currencyCode = c.currencyCode;
+      if (c.currencyCode !== null) {
+        flat.currencyCode = c.currencyCode;
+      }
       return flat;
     }),
   ),

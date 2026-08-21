@@ -17,7 +17,7 @@ import type { BoardReader } from "../../src/ashby/board.js";
 import type { Conditional, HttpOptions } from "../../src/ashby/http.js";
 import { Client } from "../../src/ashby/client.js";
 import {
-  AshbyError,
+  type AshbyError,
   isAshbyError,
   notFound,
   parseFailure,

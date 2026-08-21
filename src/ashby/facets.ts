@@ -2,7 +2,12 @@ import type { FacetValue, RawJob, Undeclared } from "../types.js";
 import { countryOf } from "./filter.js";
 
 export type FacetKey =
-  "departments" | "teams" | "locations" | "countries" | "employment_types" | "workplace_types";
+  | "departments"
+  | "teams"
+  | "locations"
+  | "countries"
+  | "employment_types"
+  | "workplace_types";
 
 export interface Facets {
   totalJobs: number;

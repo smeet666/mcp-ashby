@@ -194,10 +194,8 @@ export interface JobRow {
 }
 
 /** A posting in full, description included. */
-export interface JobRecord extends Omit<
-  JobRow,
-  "location" | "country" | "secondary_location_count"
-> {
+export interface JobRecord
+  extends Omit<JobRow, "location" | "country" | "secondary_location_count"> {
   location: Place;
   secondary_locations: Place[];
   description: { format: "plain" | "html"; text: string } | null;

@@ -4,7 +4,12 @@
  * different answers.
  */
 export type ErrorCode =
-  "not_found" | "invalid_input" | "rate_limited" | "parse_failure" | "network_error" | "timeout";
+  | "not_found"
+  | "invalid_input"
+  | "rate_limited"
+  | "parse_failure"
+  | "network_error"
+  | "timeout";
 
 export class AshbyError extends Error {
   readonly code: ErrorCode;

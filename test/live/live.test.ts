@@ -11,7 +11,7 @@ import { describe, expect, it } from "vitest";
 import { Client } from "../../src/ashby/client.js";
 import { USER_AGENT } from "../../src/ashby/config.js";
 
-const live = process.env["ASHBY_LIVE"] === "1";
+const live = process.env.ASHBY_LIVE === "1";
 const board = "Ashby";
 
 describe.skipIf(!live)("Ashby, live", () => {
@@ -51,7 +51,9 @@ describe.skipIf(!live)("Ashby, live", () => {
       const response = await fetch(`${host}/robots.txt`, {
         headers: { "user-agent": USER_AGENT },
       });
-      if (!response.ok) continue;
+      if (!response.ok) {
+        continue;
+      }
       const rules = (await response.text()).toLowerCase();
       expect(rules).not.toContain("mcp-ashby");
       expect(rules).not.toContain("claudebot");

@@ -119,9 +119,15 @@ function choose(jobs: readonly RawJob[], input: CompareCompensationArgs): RawJob
     return jobs.filter((job) => wanted.has(job.id));
   }
   const criteria: Criteria = {};
-  if (input.department !== undefined) criteria.department = input.department;
-  if (input.team !== undefined) criteria.team = input.team;
-  if (input.query !== undefined) criteria.query = input.query;
+  if (input.department !== undefined) {
+    criteria.department = input.department;
+  }
+  if (input.team !== undefined) {
+    criteria.team = input.team;
+  }
+  if (input.query !== undefined) {
+    criteria.query = input.query;
+  }
   return applyCriteria(jobs, criteria).kept;
 }
 

@@ -41,7 +41,9 @@ export async function getJson<T>(
     "accept-encoding": "gzip, deflate",
     "user-agent": options.userAgent,
   };
-  if (conditional) headers["if-none-match"] = conditional.etag;
+  if (conditional) {
+    headers["if-none-match"] = conditional.etag;
+  }
 
   let response: Response;
   try {
@@ -60,7 +62,9 @@ export async function getJson<T>(
   }
 
   try {
-    if (response.status === 304) return { status: "unchanged" };
+    if (response.status === 304) {
+      return { status: "unchanged" };
+    }
     if (response.status === 404) {
       throw notFound(
         `Ashby holds no board at ${decodeURIComponent(address.pathname.split("/").pop() ?? "")}. A board that exists and publishes nothing answers with an empty list instead, so this is an address that names nothing.`,
@@ -69,7 +73,9 @@ export async function getJson<T>(
     if (response.status === 429) {
       const failure = rateLimited("Ashby asked for a slower pace, so this read was refused.");
       const retry = retryAfterMs(response.headers.get("retry-after"));
-      if (retry !== undefined) failure.retryAfterMs = retry;
+      if (retry !== undefined) {
+        failure.retryAfterMs = retry;
+      }
       throw failure;
     }
     if (response.status >= 500) {
@@ -98,11 +104,17 @@ export async function getJson<T>(
 }
 
 function retryAfterMs(header: string | null): number | undefined {
-  if (header === null) return undefined;
+  if (header === null) {
+    return undefined;
+  }
   const seconds = Number(header);
-  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
+  if (Number.isFinite(seconds) && seconds >= 0) {
+    return seconds * 1000;
+  }
   const when = Date.parse(header);
-  if (Number.isNaN(when)) return undefined;
+  if (Number.isNaN(when)) {
+    return undefined;
+  }
   return Math.max(0, when - Date.now());
 }
 

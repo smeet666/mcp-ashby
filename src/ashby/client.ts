@@ -54,13 +54,19 @@ export class Client {
       // An absence is held like anything else: resolving one company probes
       // several spellings, and re-asking for the same missing one would pay for
       // each of them again.
-      if (held.value instanceof AshbyError) throw held.value;
-      if (this.boards.isFresh(held)) return { value: held.value, cached: true };
+      if (held.value instanceof AshbyError) {
+        throw held.value;
+      }
+      if (this.boards.isFresh(held)) {
+        return { value: held.value, cached: true };
+      }
       return this.revalidate(url, held.value, held.etag);
     }
 
     const pending = this.inFlight.get(url);
-    if (pending) return { value: await pending, cached: true };
+    if (pending) {
+      return { value: await pending, cached: true };
+    }
 
     const run = this.fetchBoard(url);
     this.inFlight.set(url, run);
@@ -117,8 +123,12 @@ export class Client {
   }
 
   private note(error: unknown, url: string): void {
-    if (!isAshbyError(error)) return;
-    if (error.code === "not_found") this.boards.set(url, error, null);
+    if (!isAshbyError(error)) {
+      return;
+    }
+    if (error.code === "not_found") {
+      this.boards.set(url, error, null);
+    }
     // Ashby named a delay, so the next departure waits it out rather than
     // walking straight back into the wall.
     if (error.code === "rate_limited" && error.retryAfterMs) {
@@ -135,7 +145,9 @@ export class Client {
   async resolveBoard(name: string): Promise<Resolution> {
     const key = name.trim().toLowerCase();
     const held = this.resolutions.get(key);
-    if (held !== undefined) return { ...held.value, cached: true };
+    if (held !== undefined) {
+      return { ...held.value, cached: true };
+    }
     const resolution = await resolveBoard(name, this);
     this.resolutions.set(key, resolution, null);
     return resolution;

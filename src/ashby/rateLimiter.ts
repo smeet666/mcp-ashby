@@ -15,7 +15,9 @@ export class RateLimiter {
   schedule<T>(task: () => Promise<T>): Promise<T> {
     const run = this.chain.then(async () => {
       const wait = this.nextDeparture - Date.now();
-      if (wait > 0) await sleep(wait);
+      if (wait > 0) {
+        await sleep(wait);
+      }
       this.nextDeparture = Date.now() + this.intervalMs;
       return task();
     });

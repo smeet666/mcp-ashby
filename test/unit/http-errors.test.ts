@@ -21,7 +21,9 @@ describe("a readable answer", () => {
     const result = await getJson<RawBoard>(address("invented"), httpOptions(fake));
 
     expect(result.status).toBe("ok");
-    if (result.status !== "ok") throw new Error("the read was expected to succeed");
+    if (result.status !== "ok") {
+      throw new Error("the read was expected to succeed");
+    }
     expect(result.body.apiVersion).toBe("1");
     expect(result.body.jobs).toHaveLength(15);
     expect(result.etag).toBe('W/"job-board:abc"');
@@ -33,7 +35,9 @@ describe("a readable answer", () => {
     const result = await getJson<RawBoard>(address("invented"), httpOptions(fake));
 
     expect(result.status).toBe("ok");
-    if (result.status !== "ok") throw new Error("the read was expected to succeed");
+    if (result.status !== "ok") {
+      throw new Error("the read was expected to succeed");
+    }
     expect(result.etag).toBeNull();
   });
 });

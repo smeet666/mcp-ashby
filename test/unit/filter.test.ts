@@ -12,7 +12,9 @@ const silent = (result: FilterResult): Record<string, number> =>
   result.undeclared as unknown as Record<string, number>;
 
 function unmatchedCount(value: unknown): number {
-  if (Array.isArray(value)) return value.length;
+  if (Array.isArray(value)) {
+    return value.length;
+  }
   if (value !== null && typeof value === "object") {
     return Object.values(value as Record<string, unknown>).flat().length;
   }
@@ -294,7 +296,7 @@ describe("sorting", () => {
     const sorted = sortJobs(wideJobs, "published_desc");
 
     expect(sorted[0]?.publishedAt.startsWith("2026-09")).toBe(true);
-    expect(sorted[sorted.length - 1]?.publishedAt.startsWith("2026-01")).toBe(true);
+    expect(sorted.at(-1)?.publishedAt.startsWith("2026-01")).toBe(true);
   });
 
   it("puts the oldest posting first on the ascending order", () => {

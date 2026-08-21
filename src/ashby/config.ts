@@ -73,7 +73,9 @@ export interface ClientOptions {
 }
 
 export function resolveInterval(requested?: number): number {
-  if (requested === undefined || !Number.isFinite(requested)) return MIN_INTERVAL_MS;
+  if (requested === undefined || !Number.isFinite(requested)) {
+    return MIN_INTERVAL_MS;
+  }
   return Math.max(MIN_INTERVAL_MS, requested);
 }
 

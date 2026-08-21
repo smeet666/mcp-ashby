@@ -182,11 +182,15 @@ async function searchOne(
     for (const [field, missing] of Object.entries(result.unmatchedValues)) {
       unmatched[field] = new Set([...(unmatched[field] ?? []), ...missing]);
       const facet = FACET_OF[field];
-      if (facet === undefined) continue;
-      const counted = countFacets(board.data, [facet])["facets"][facet] ?? [];
+      if (facet === undefined) {
+        continue;
+      }
+      const counted = countFacets(board.data, [facet]).facets[facet] ?? [];
       present[field] = new Set([...(present[field] ?? []), ...counted.map((one) => one.value)]);
     }
-    for (const job of result.kept) rows.push({ row: toJobRow(job, found.board), job });
+    for (const job of result.kept) {
+      rows.push({ row: toJobRow(job, found.board), job });
+    }
     return {
       input: company,
       board: found.board,
@@ -216,7 +220,9 @@ function refuseUnknownValues(
   boardsRead: CompanyOutcome[],
 ): void {
   const fields = Object.entries(unmatched).filter(([, missing]) => missing.size > 0);
-  if (fields.length === 0) return;
+  if (fields.length === 0) {
+    return;
+  }
   const [field, missing] = fields[0] as [string, Set<string>];
   const carried = [...(present[field] ?? [])].sort();
   throw invalidInput(
@@ -236,18 +242,42 @@ const FACET_OF: Record<string, FacetKey> = {
 
 function toCriteria(input: SearchJobsArgs): Criteria {
   const criteria: Criteria = { searchIn: input.search_in, salaryInterval: input.salary_interval };
-  if (input.query !== undefined) criteria.query = input.query;
-  if (input.department !== undefined) criteria.department = input.department;
-  if (input.team !== undefined) criteria.team = input.team;
-  if (input.employment_type !== undefined) criteria.employmentType = input.employment_type;
-  if (input.workplace_type !== undefined) criteria.workplaceType = input.workplace_type;
-  if (input.is_remote !== undefined) criteria.isRemote = input.is_remote;
-  if (input.country !== undefined) criteria.country = input.country;
-  if (input.location_contains !== undefined) criteria.locationContains = input.location_contains;
-  if (input.published_after !== undefined) criteria.publishedAfter = input.published_after;
-  if (input.has_compensation !== undefined) criteria.hasCompensation = input.has_compensation;
-  if (input.salary_min !== undefined) criteria.salaryMin = input.salary_min;
-  if (input.currency !== undefined) criteria.currency = input.currency;
+  if (input.query !== undefined) {
+    criteria.query = input.query;
+  }
+  if (input.department !== undefined) {
+    criteria.department = input.department;
+  }
+  if (input.team !== undefined) {
+    criteria.team = input.team;
+  }
+  if (input.employment_type !== undefined) {
+    criteria.employmentType = input.employment_type;
+  }
+  if (input.workplace_type !== undefined) {
+    criteria.workplaceType = input.workplace_type;
+  }
+  if (input.is_remote !== undefined) {
+    criteria.isRemote = input.is_remote;
+  }
+  if (input.country !== undefined) {
+    criteria.country = input.country;
+  }
+  if (input.location_contains !== undefined) {
+    criteria.locationContains = input.location_contains;
+  }
+  if (input.published_after !== undefined) {
+    criteria.publishedAfter = input.published_after;
+  }
+  if (input.has_compensation !== undefined) {
+    criteria.hasCompensation = input.has_compensation;
+  }
+  if (input.salary_min !== undefined) {
+    criteria.salaryMin = input.salary_min;
+  }
+  if (input.currency !== undefined) {
+    criteria.currency = input.currency;
+  }
   return criteria;
 }
 
@@ -271,7 +301,9 @@ function appliedFilters(input: SearchJobsArgs): Record<string, unknown> {
   ] as const;
   for (const key of carried) {
     const value = input[key];
-    if (value !== undefined) applied[key] = value;
+    if (value !== undefined) {
+      applied[key] = value;
+    }
   }
   return applied;
 }

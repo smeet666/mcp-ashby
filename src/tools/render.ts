@@ -76,7 +76,9 @@ export function toPlace(label: string, address: RawAddress | undefined): Place {
 }
 
 function text(value: string | undefined): string | null {
-  if (value === undefined) return null;
+  if (value === undefined) {
+    return null;
+  }
   const trimmed = value.trim();
   return trimmed.length === 0 ? null : trimmed;
 }
@@ -95,25 +97,25 @@ export function indentMarkerLines(text: string): string {
 /** The note a filter owes a caller when a field falls silent. */
 export function undeclaredNotes(undeclared: Undeclared): string[] {
   const notes: string[] = [];
-  const workplace = undeclared["workplace_type"] ?? undeclared["is_remote"];
+  const workplace = undeclared.workplace_type ?? undeclared.is_remote;
   if (workplace !== undefined && workplace > 0) {
     notes.push(
       `${workplace} postings record no workplace at all, so this filter set them aside. A posting recording none is not a posting on site.`,
     );
   }
-  const withheld = undeclared["compensation"];
+  const withheld = undeclared.compensation;
   if (withheld !== undefined && withheld > 0) {
     notes.push(
       `${withheld} postings belong to companies that withhold their pay ranges, so a threshold could say nothing about them. That is a decision of the company, never a salary of zero.`,
     );
   }
-  const apart = undeclared["salary_comparison"];
+  const apart = undeclared.salary_comparison;
   if (apart !== undefined && apart > 0) {
     notes.push(
       `${apart} postings state a salary in another currency or over another period, so the threshold could not weigh them. Nothing here converts between them.`,
     );
   }
-  const country = undeclared["country"];
+  const country = undeclared.country;
   if (country !== undefined && country > 0) {
     notes.push(`${country} postings state no country, so this filter set them aside.`);
   }

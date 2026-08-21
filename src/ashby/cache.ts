@@ -29,7 +29,9 @@ export class Cache<T> {
   /** The entry, fresh or stale, with what is needed to revalidate it. */
   get(key: string): CacheEntry<T> | undefined {
     const entry = this.entries.get(key);
-    if (entry === undefined) return undefined;
+    if (entry === undefined) {
+      return undefined;
+    }
     this.touch(key);
     return entry;
   }
@@ -44,7 +46,9 @@ export class Cache<T> {
     this.entries.set(key, { value, etag, storedAt: Date.now() });
     while (this.entries.size > this.maxEntries) {
       const oldest = this.entries.keys().next();
-      if (oldest.done === true) break;
+      if (oldest.done === true) {
+        break;
+      }
       this.entries.delete(oldest.value);
     }
   }
@@ -52,7 +56,9 @@ export class Cache<T> {
   /** Marks a held entry as read again, without replacing what it holds. */
   touch(key: string): void {
     const entry = this.entries.get(key);
-    if (entry === undefined) return;
+    if (entry === undefined) {
+      return;
+    }
     this.entries.delete(key);
     this.entries.set(key, entry);
   }
@@ -60,7 +66,9 @@ export class Cache<T> {
   /** Stamps a revalidated entry as current, keeping the value it holds. */
   refresh(key: string): void {
     const entry = this.entries.get(key);
-    if (entry === undefined) return;
+    if (entry === undefined) {
+      return;
+    }
     entry.storedAt = Date.now();
     this.touch(key);
   }

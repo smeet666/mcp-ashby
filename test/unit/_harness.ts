@@ -70,13 +70,19 @@ function isBoard(route: Route): route is RawBoard {
 function tokenOf(url: URL): string {
   const marker = "/posting-api/job-board/";
   const at = url.pathname.indexOf(marker);
-  if (at < 0) return "";
+  if (at < 0) {
+    return "";
+  }
   return decodeURIComponent(url.pathname.slice(at + marker.length));
 }
 
 function urlOf(input: string | URL | Request): string {
-  if (typeof input === "string") return input;
-  if (input instanceof URL) return input.href;
+  if (typeof input === "string") {
+    return input;
+  }
+  if (input instanceof URL) {
+    return input.href;
+  }
   return input.url;
 }
 
@@ -84,9 +90,40 @@ function urlOf(input: string | URL | Request): string {
  * Builds a transport answering the given board tokens, matched without regard
  * to case since the token itself is case-insensitive.
  */
+/** The answer a stubbed route stands for, once it is known to be one. */
+function answerFor(route: RouteSpec, headers: Record<string, string>): Response {
+  const status = route.status ?? 200;
+  if (status === 304) {
+    return new Response(null, { status: 304 });
+  }
+
+  if (status !== 200) {
+    const responseHeaders = new Headers();
+    if (route.retryAfterSeconds !== undefined) {
+      responseHeaders.set("retry-after", String(route.retryAfterSeconds));
+    }
+    return new Response(route.bodyText ?? "", { status, headers: responseHeaders });
+  }
+
+  if (route.bodyText !== undefined) {
+    return new Response(route.bodyText, {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  }
+
+  return jsonResponse(
+    route.board ?? ({ apiVersion: "1", jobs: [] } as RawBoard),
+    headers,
+    route.etag,
+  );
+}
+
 export function fakeFetch(routes: Record<string, Route>): FakeFetch {
   const table = new Map<string, Route>();
-  for (const [key, route] of Object.entries(routes)) table.set(key.toLowerCase(), route);
+  for (const [key, route] of Object.entries(routes)) {
+    table.set(key.toLowerCase(), route);
+  }
 
   const calls: RecordedRequest[] = [];
 
@@ -94,7 +131,9 @@ export function fakeFetch(routes: Record<string, Route>): FakeFetch {
     const raw = urlOf(input);
     const url = new URL(raw);
     const headers: Record<string, string> = {};
-    for (const [key, value] of new Headers(init?.headers ?? {})) headers[key.toLowerCase()] = value;
+    for (const [key, value] of new Headers(init?.headers ?? {})) {
+      headers[key.toLowerCase()] = value;
+    }
     calls.push({ url: raw, method: init?.method ?? "GET", headers });
 
     if (url.host !== ALLOWED_HOST) {
@@ -111,28 +150,10 @@ export function fakeFetch(routes: Record<string, Route>): FakeFetch {
     if (isBoard(route)) {
       return jsonResponse(route, headers);
     }
-    if (route.reject !== undefined) throw route.reject;
-
-    const status = route.status ?? 200;
-    if (status === 304) return new Response(null, { status: 304 });
-    if (status !== 200) {
-      const responseHeaders = new Headers();
-      if (route.retryAfterSeconds !== undefined) {
-        responseHeaders.set("retry-after", String(route.retryAfterSeconds));
-      }
-      return new Response(route.bodyText ?? "", { status, headers: responseHeaders });
+    if (route.reject !== undefined) {
+      throw route.reject;
     }
-    if (route.bodyText !== undefined) {
-      return new Response(route.bodyText, {
-        status: 200,
-        headers: { "content-type": "application/json" },
-      });
-    }
-    return jsonResponse(
-      route.board ?? ({ apiVersion: "1", jobs: [] } as RawBoard),
-      headers,
-      route.etag,
-    );
+    return answerFor(route, headers);
   };
 
   return { fetchImpl, calls, urls: () => calls.map((call) => call.url) };
@@ -148,7 +169,9 @@ function jsonResponse(
     "content-type": "application/json",
     "cache-control": "public, max-age=60, stale-while-revalidate=60",
   });
-  if (etag !== null) headers.set("etag", etag);
+  if (etag !== null) {
+    headers.set("etag", etag);
+  }
   if (etag !== null && requestHeaders["if-none-match"] === etag) {
     return new Response(null, { status: 304, headers });
   }
@@ -167,7 +190,9 @@ export interface FakeReader extends BoardReader {
 
 export function fakeReader(routes: Record<string, ReaderRoute>): FakeReader {
   const table = new Map<string, ReaderRoute>();
-  for (const [key, route] of Object.entries(routes)) table.set(key.toLowerCase(), route);
+  for (const [key, route] of Object.entries(routes)) {
+    table.set(key.toLowerCase(), route);
+  }
 
   const reader: FakeReader = {
     urls: [],
@@ -186,9 +211,15 @@ export function fakeReader(routes: Record<string, ReaderRoute>): FakeReader {
       reader.tokens.push(token);
 
       const route = table.get(token.toLowerCase());
-      if (route === undefined || route === "unknown-token") throw makeNotFound(token);
-      if (route === "unreadable") throw makeParseFailure(token);
-      if (route === "cut") throw makeNetworkError(token);
+      if (route === undefined || route === "unknown-token") {
+        throw makeNotFound(token);
+      }
+      if (route === "unreadable") {
+        throw makeParseFailure(token);
+      }
+      if (route === "cut") {
+        throw makeNetworkError(token);
+      }
       return { value: route, cached: reader.cachedTokens.has(token.toLowerCase()) };
     },
   };
@@ -244,7 +275,9 @@ export function structured(result: CallToolResult): Record<string, unknown> {
 /** The concatenated text of a tool result, which is where the notes live. */
 export function resultText(result: CallToolResult): string {
   const content = (result as { content?: unknown }).content;
-  if (!Array.isArray(content)) return "";
+  if (!Array.isArray(content)) {
+    return "";
+  }
   return content
     .map((part) =>
       typeof (part as { text?: unknown }).text === "string" ? (part as { text: string }).text : "",
@@ -279,7 +312,9 @@ export async function settled<T>(promise: Promise<T>): Promise<T> {
   );
   await vi.runAllTimersAsync();
   const outcome = await guarded;
-  if (outcome.ok) return outcome.value;
+  if (outcome.ok) {
+    return outcome.value;
+  }
   throw outcome.error;
 }
 
@@ -288,7 +323,9 @@ export async function captureError(run: () => unknown | Promise<unknown>): Promi
   try {
     await run();
   } catch (error) {
-    if (isAshbyError(error)) return error as AshbyError;
+    if (isAshbyError(error)) {
+      return error as AshbyError;
+    }
     throw error;
   }
   throw new Error("the call was expected to fail and returned instead");

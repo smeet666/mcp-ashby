@@ -21,7 +21,7 @@ jobs:
       # nit must never hide a failing test, so both jobs start at once.
       - run: npm run check
 
-  check:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

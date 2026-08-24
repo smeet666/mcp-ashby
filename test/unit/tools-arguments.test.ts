@@ -1,3 +1,4 @@
+import { fixtureId } from "./_corpus.js";
 import { describe, expect, it } from "vitest";
 import { parseArgs } from "../../src/tools/arguments.js";
 import {
@@ -19,7 +20,6 @@ import { captureError, makeNotFound, resultText } from "./_harness.js";
 /** What a refusal states, whether in its message or in the values it lists. */
 const refusalNames = (error: { message: string; allowedValues?: string[] }): string =>
   `${error.message} ${JSON.stringify(error.allowedValues ?? [])}`;
-import { fixtureId } from "./_corpus.js";
 
 /** Arguments are read through the schema each tool publishes. */
 const parse = (schema: unknown, args: Record<string, unknown>): Record<string, unknown> =>

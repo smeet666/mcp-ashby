@@ -1,3 +1,4 @@
+import type { ClientOptions } from "./config.js";
 import {
   CACHE_MAX_ENTRIES,
   CACHE_TTL_MS,
@@ -5,7 +6,6 @@ import {
   REQUEST_TIMEOUT_MS,
   USER_AGENT,
   resolveInterval,
-  type ClientOptions,
 } from "./config.js";
 import type { RawBoard, RawJob, Read, Resolution } from "../types.js";
 import { Cache } from "./cache.js";
@@ -154,4 +154,4 @@ export class Client {
   }
 }
 
-export type { ClientOptions };
+export type { ClientOptions } from "./config.js";

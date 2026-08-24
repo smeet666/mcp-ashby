@@ -94,8 +94,8 @@ export async function getJson<T>(
     let body: T;
     try {
       body = JSON.parse(text) as T;
-    } catch {
-      throw parseFailure("Ashby answered something this client cannot read as a board.");
+    } catch (cause) {
+      throw parseFailure("Ashby answered something this client cannot read as a board.", cause);
     }
     return { status: "ok", body, etag: response.headers.get("etag") };
   } finally {

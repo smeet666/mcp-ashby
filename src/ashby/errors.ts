@@ -18,8 +18,8 @@ export class AshbyError extends Error {
   /** Set on rate_limited when a delay was named. */
   retryAfterMs?: number;
 
-  constructor(code: ErrorCode, message: string, allowedValues?: string[]) {
-    super(message);
+  constructor(code: ErrorCode, message: string, allowedValues?: string[], cause?: unknown) {
+    super(message, cause === undefined ? undefined : { cause });
     this.name = "AshbyError";
     this.code = code;
     if (allowedValues) {
@@ -29,10 +29,11 @@ export class AshbyError extends Error {
 }
 
 export const notFound = (message: string) => new AshbyError("not_found", message);
-export const invalidInput = (message: string, allowed?: string[]) =>
-  new AshbyError("invalid_input", message, allowed);
+export const invalidInput = (message: string, allowed?: string[], cause?: unknown) =>
+  new AshbyError("invalid_input", message, allowed, cause);
 export const rateLimited = (message: string) => new AshbyError("rate_limited", message);
-export const parseFailure = (message: string) => new AshbyError("parse_failure", message);
+export const parseFailure = (message: string, cause?: unknown) =>
+  new AshbyError("parse_failure", message, undefined, cause);
 export const networkError = (message: string) => new AshbyError("network_error", message);
 export const timeout = (message: string) => new AshbyError("timeout", message);
 

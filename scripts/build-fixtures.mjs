@@ -56,8 +56,8 @@ const tiered = (tiers) => ({
   compensationTiers: tiers,
   // The flattened list drops the currency key on components that have none,
   // which is the reason the tiers are read instead of this.
-  summaryComponents: tiers.flatMap((tier) =>
-    tier.components.map((c) => {
+  summaryComponents: tiers.flatMap((one) =>
+    one.components.map((c) => {
       const flat = {
         compensationType: c.compensationType,
         minValue: c.minValue,

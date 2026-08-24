@@ -33,7 +33,7 @@ const postal = (locality, region, country, postalCode) => {
   return { postalAddress: address };
 };
 
-const component = (type, min, max, currency, interval, summary) => ({
+const component = (type, [min, max], currency, interval, summary) => ({
   id: `c-${type}-${interval}`.toLowerCase(),
   summary,
   compensationType: type,
@@ -100,7 +100,7 @@ const job = (n, over = {}) => ({
   descriptionPlain: `An invented posting, number ${n}.`,
   compensation: tiered([
     tier(null, "$100K – $120K", [
-      component("Salary", 100000, 120000, "USD", "1 YEAR", "$100K – $120K"),
+      component("Salary", [100000, 120000], "USD", "1 YEAR", "$100K – $120K"),
     ]),
   ]),
   ...over,
@@ -122,9 +122,9 @@ const shapes = [
     title: "Posting promising equity without an amount",
     compensation: tiered([
       tier("Zone A", "$90K – $95K • Offers Equity", [
-        component("Salary", 90000, 95000, "USD", "1 YEAR", "$90K – $95K"),
-        component("EquityPercentage", null, null, null, "NONE", "Offers Equity"),
-        component("EquityCashValue", null, null, "USD", "1 YEAR", "Offers Equity"),
+        component("Salary", [90000, 95000], "USD", "1 YEAR", "$90K – $95K"),
+        component("EquityPercentage", [null, null], null, "NONE", "Offers Equity"),
+        component("EquityCashValue", [null, null], "USD", "1 YEAR", "Offers Equity"),
       ]),
     ]),
   }),
@@ -133,14 +133,14 @@ const shapes = [
     employmentType: "Contract",
     compensation: tiered([
       tier(null, "$45 – $60 / hr", [
-        component("Salary", 45, 60, "USD", "1 HOUR", "$45 – $60 / hr"),
+        component("Salary", [45, 60], "USD", "1 HOUR", "$45 – $60 / hr"),
       ]),
     ]),
   }),
   job(5, {
     title: "Posting on a single amount",
     compensation: tiered([
-      tier(null, "€110K", [component("Salary", 110000, 110000, "EUR", "1 YEAR", "€110K")]),
+      tier(null, "€110K", [component("Salary", [110000, 110000], "EUR", "1 YEAR", "€110K")]),
     ]),
   }),
   job(6, {
@@ -150,8 +150,7 @@ const shapes = [
         tier(`Zone ${String.fromCharCode(65 + i)}`, `$${90 + i * 10}K – $${110 + i * 10}K`, [
           component(
             "Salary",
-            (90 + i * 10) * 1000,
-            (110 + i * 10) * 1000,
+            [(90 + i * 10) * 1000, (110 + i * 10) * 1000],
             "USD",
             "1 YEAR",
             `$${90 + i * 10}K – $${110 + i * 10}K`,
@@ -192,7 +191,7 @@ const shapes = [
     employmentType: "Seasonal",
     workplaceType: "Nomadic",
     compensation: tiered([
-      tier(null, "Bartered", [component("BarterCredits", 1, 2, "XBT", "1 MOON", "Bartered")]),
+      tier(null, "Bartered", [component("BarterCredits", [1, 2], "XBT", "1 MOON", "Bartered")]),
     ]),
   }),
   job(14, {
@@ -225,8 +224,7 @@ const wide = Array.from({ length: 120 }, (_, i) =>
             tier(null, `$${80 + i}K – $${100 + i}K`, [
               component(
                 "Salary",
-                (80 + i) * 1000,
-                (100 + i) * 1000,
+                [(80 + i) * 1000, (100 + i) * 1000],
                 i % 7 === 0 ? "CAD" : "USD",
                 "1 YEAR",
                 `$${80 + i}K – $${100 + i}K`,

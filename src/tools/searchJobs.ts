@@ -92,15 +92,12 @@ export async function runSearchJobs(client: Client, args: SearchJobsArgs): Promi
     let totalOnBoard = 0;
 
     for (const company of input.companies) {
-      const outcome = await searchOne(
-        client,
-        company,
-        criteria,
+      const outcome = await searchOne(client, company, criteria, {
         rows,
         undeclared,
         unmatched,
         present,
-      );
+      });
       totalOnBoard += outcome.read ?? 0;
       outcomes.push(outcome);
     }
@@ -156,15 +153,25 @@ export async function runSearchJobs(client: Client, args: SearchJobsArgs): Promi
   }
 }
 
+/**
+ * What one board answered, with what every board so far has put into the lists.
+ *
+ * The four lists are filled across companies rather than per company: a wording
+ * one board does not know can be a wording another one does, and the refusal is
+ * written once the whole search has been read.
+ */
 async function searchOne(
   client: Client,
   company: string,
   criteria: Criteria,
-  rows: { row: JobRow; job: RawJob }[],
-  undeclared: Undeclared,
-  unmatched: Record<string, Set<string>>,
-  present: Record<string, Set<string>>,
+  collecting: {
+    rows: { row: JobRow; job: RawJob }[];
+    undeclared: Undeclared;
+    unmatched: Record<string, Set<string>>;
+    present: Record<string, Set<string>>;
+  },
 ): Promise<CompanyOutcome> {
+  const { rows, undeclared, unmatched, present } = collecting;
   try {
     const resolution = await client.resolveBoard(company);
     const found = resolution.found[0];

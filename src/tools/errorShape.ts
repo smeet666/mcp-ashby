@@ -16,8 +16,9 @@ export function toolFailure(error: unknown): CallToolResult {
     ours?.message ??
     "This client failed while building the answer, so nothing here states anything about what Ashby publishes.";
   const lines = [`[${code}] ${message}`];
-  if (ours?.allowedValues?.length) {
-    lines.push(`This board publishes: ${ours.allowedValues.join(", ")}.`);
+  const published = ours?.allowedValues ?? [];
+  if (published.length > 0) {
+    lines.push(`This board publishes: ${published.join(", ")}.`);
   }
   return { isError: true, content: [{ type: "text", text: lines.join("\n") }] };
 }

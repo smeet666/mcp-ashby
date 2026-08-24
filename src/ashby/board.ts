@@ -4,7 +4,7 @@ import type { RawBoard, RawJob, Read } from "../types.js";
 
 /** What `readBoard` needs of a client, so it can be read without one. */
 export interface BoardReader {
-  read(url: string): Promise<{ value: RawBoard; cached: boolean }>;
+  read: (url: string) => Promise<{ value: RawBoard; cached: boolean }>;
 }
 
 /**

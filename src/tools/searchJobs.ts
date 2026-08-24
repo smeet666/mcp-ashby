@@ -226,7 +226,9 @@ function refuseUnknownValues(
   present: Record<string, Set<string>>,
   boardsRead: CompanyOutcome[],
 ): void {
-  const fields = Object.entries(unmatched).filter(([, missing]) => missing.size > 0);
+  const fields = Object.entries(unmatched).filter(
+    ([, unknownWordings]) => unknownWordings.size > 0,
+  );
   if (fields.length === 0) {
     return;
   }

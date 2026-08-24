@@ -13,8 +13,8 @@ export function assertAllowed(url: string): URL {
   let parsed: URL;
   try {
     parsed = new URL(url);
-  } catch {
-    throw invalidInput(`${url} is not an address this client can request.`);
+  } catch (cause) {
+    throw invalidInput(`${url} is not an address this client can request.`, undefined, cause);
   }
   if (parsed.protocol !== "https:") {
     throw invalidInput(`This client reads over https, and ${url} asks for ${parsed.protocol}`);

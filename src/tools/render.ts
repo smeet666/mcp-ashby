@@ -90,8 +90,8 @@ function text(value: string | undefined): string | null {
  * it opens with would otherwise read as a note from the server about what
  * Ashby holds.
  */
-export function indentMarkerLines(text: string): string {
-  return text.replace(/^(\s*)(Note|Source)\s*:/gm, "$1 $2:");
+export function indentMarkerLines(written: string): string {
+  return written.replace(/^(\s*)(Note|Source)\s*:/gm, "$1 $2:");
 }
 
 /** The note a filter owes a caller when a field falls silent. */

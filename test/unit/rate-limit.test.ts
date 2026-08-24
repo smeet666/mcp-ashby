@@ -30,8 +30,8 @@ describe("the pace between two requests", () => {
     const limiter = new RateLimiter(1_000);
     const { starts, task } = recorder();
 
-    const first = limiter.schedule(task("first"));
-    const second = limiter.schedule(task("second"));
+    const first = limiter.schedule(task("first")).catch(() => undefined);
+    const second = limiter.schedule(task("second")).catch(() => undefined);
     await vi.advanceTimersByTimeAsync(10_000);
     await Promise.all([first, second]);
 
@@ -43,8 +43,8 @@ describe("the pace between two requests", () => {
     const limiter = new RateLimiter(1_000);
     const { starts, task } = recorder();
 
-    void limiter.schedule(task("first"));
-    void limiter.schedule(task("second"));
+    limiter.schedule(task("first")).catch(() => undefined);
+    limiter.schedule(task("second")).catch(() => undefined);
 
     await vi.advanceTimersByTimeAsync(999);
     expect(starts).toHaveLength(1);
@@ -144,10 +144,10 @@ describe("a pause", () => {
     const limiter = new RateLimiter(1_000);
     const { starts, task } = recorder();
 
-    void limiter.schedule(task("first"));
+    limiter.schedule(task("first")).catch(() => undefined);
     await vi.advanceTimersByTimeAsync(0);
     limiter.pause(5_000);
-    void limiter.schedule(task("second"));
+    limiter.schedule(task("second")).catch(() => undefined);
 
     await vi.advanceTimersByTimeAsync(4_000);
     expect(starts).toHaveLength(1);

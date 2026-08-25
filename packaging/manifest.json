@@ -9,7 +9,11 @@
     "name": "Damien Bouissou",
     "url": "https://github.com/smeet666"
   },
-  "homepage": "https://github.com/smeet666/mcp-ashby",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smeet666/mcp-ashby.git"
+  },
+  "homepage": "https://github.com/smeet666/mcp-ashby#readme",
   "documentation": "https://github.com/smeet666/mcp-ashby#readme",
   "support": "https://github.com/smeet666/mcp-ashby/issues",
   "license": "MIT",
@@ -44,7 +48,7 @@
       "description": "Compare the pay ranges one board publishes."
     }
   ],
-  "icon": "assets/icon-128.png",
+  "icon": "assets/icon-512.png",
   "compatibility": {
     "platforms": ["darwin", "win32", "linux"],
     "runtimes": {

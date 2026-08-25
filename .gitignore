@@ -1,6 +1,5 @@
 node_modules/
 dist/
-dist-bundle/
 bundle/
 *.log
 *.mcpb

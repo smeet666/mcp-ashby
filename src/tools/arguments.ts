@@ -14,6 +14,7 @@ import { z } from "zod";
 import { invalidInput } from "../ashby/errors.js";
 
 const CODE = "[invalid_input]";
+const CURRENCY_CODE = /^[A-Za-z]{3}$/;
 
 const capitalise = (what: string): string => `${what.charAt(0).toUpperCase()}${what.slice(1)}.`;
 
@@ -54,7 +55,7 @@ export function currencyCode(argument: string): z.ZodString {
   const error = `${CODE} ${argument} takes a three-letter currency code, as in EUR or USD. Ashby publishes each amount in the currency the company wrote it in, and nothing here converts between them, so a code a board never uses matches nothing it holds.`;
   return z
     .string({ error })
-    .regex(/^[A-Za-z]{3}$/, error)
+    .regex(CURRENCY_CODE, error)
     .describe("A three-letter currency code, as in EUR or USD.");
 }
 

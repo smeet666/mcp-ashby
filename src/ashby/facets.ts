@@ -26,6 +26,8 @@ export interface Facets {
 }
 
 /** A facet is plural, and the field a caller filters on is singular. */
+const WHITESPACE = /\s+/;
+
 const FIELD_OF: Record<FacetKey, string> = {
   departments: "department",
   teams: "team",
@@ -145,7 +147,7 @@ function initials(value: string): string {
   const words = value
     .toLowerCase()
     .replace(/[^a-z\s]/g, "")
-    .split(/\s+/)
+    .split(WHITESPACE)
     .filter(Boolean);
   if (words.length === 0) {
     return "";

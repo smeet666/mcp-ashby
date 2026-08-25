@@ -7,6 +7,7 @@
  * aimed at this agent, at `ClaudeBot`, or at `/posting-api/` breaks the build.
  */
 
+import process from "node:process";
 import { describe, expect, it } from "vitest";
 import { Client } from "../../src/ashby/client.js";
 import { USER_AGENT } from "../../src/ashby/config.js";

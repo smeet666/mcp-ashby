@@ -27,7 +27,7 @@ function recorder(): { starts: number[]; task: (label: string) => () => Promise<
 
 describe("the pace between two requests", () => {
   it("separates two tasks scheduled together by at least the interval", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     const { starts, task } = recorder();
 
     const first = limiter.schedule(task("first")).catch(() => undefined);
@@ -36,11 +36,11 @@ describe("the pace between two requests", () => {
     await Promise.all([first, second]);
 
     expect(starts).toHaveLength(2);
-    expect(starts[1]! - starts[0]!).toBeGreaterThanOrEqual(1_000);
+    expect(starts[1]! - starts[0]!).toBeGreaterThanOrEqual(1000);
   });
 
   it("holds the second task back while the interval has not elapsed", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     const { starts, task } = recorder();
 
     limiter.schedule(task("first")).catch(() => undefined);
@@ -54,7 +54,7 @@ describe("the pace between two requests", () => {
   });
 
   it("starts tasks in the order they were scheduled", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     const seen: string[] = [];
     const task = (label: string) => async (): Promise<string> => {
       seen.push(label);
@@ -73,7 +73,7 @@ describe("the pace between two requests", () => {
   });
 
   it("runs one task at a time, waiting for the one in flight", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     const seen: string[] = [];
     let release: () => void = () => undefined;
     const held = new Promise<void>((resolve) => {
@@ -100,7 +100,7 @@ describe("the pace between two requests", () => {
   });
 
   it("hands back what the task returned", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
 
     const value = limiter.schedule(async () => 42);
     await vi.advanceTimersByTimeAsync(10_000);
@@ -109,7 +109,7 @@ describe("the pace between two requests", () => {
   });
 
   it("hands back the failure the task raised", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
 
     const failing = limiter.schedule(async () => {
       throw new Error("the task failed");
@@ -120,7 +120,7 @@ describe("the pace between two requests", () => {
   });
 
   it("keeps the queue moving after a task fails", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     const seen: string[] = [];
 
     const failing = limiter.schedule(async () => {
@@ -141,23 +141,23 @@ describe("the pace between two requests", () => {
 
 describe("a pause", () => {
   it("delays the next departure by the amount asked for", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     const { starts, task } = recorder();
 
     limiter.schedule(task("first")).catch(() => undefined);
     await vi.advanceTimersByTimeAsync(0);
-    limiter.pause(5_000);
+    limiter.pause(5000);
     limiter.schedule(task("second")).catch(() => undefined);
 
-    await vi.advanceTimersByTimeAsync(4_000);
+    await vi.advanceTimersByTimeAsync(4000);
     expect(starts).toHaveLength(1);
 
-    await vi.advanceTimersByTimeAsync(2_000);
+    await vi.advanceTimersByTimeAsync(2000);
     expect(starts).toHaveLength(2);
   });
 
   it("leaves the task in flight running", async () => {
-    const limiter = new RateLimiter(1_000);
+    const limiter = new RateLimiter(1000);
     let finished = false;
 
     const first = limiter.schedule(async () => {
@@ -174,11 +174,11 @@ describe("a pause", () => {
 
 describe("the floor the configuration may widen", () => {
   it("is one second", () => {
-    expect(MIN_INTERVAL_MS).toBe(1_000);
+    expect(MIN_INTERVAL_MS).toBe(1000);
   });
 
   it("keeps a request wider than the floor", () => {
-    expect(resolveInterval(5_000)).toBe(5_000);
+    expect(resolveInterval(5000)).toBe(5000);
   });
 
   it("raises a request below the floor to the floor", () => {
@@ -186,7 +186,7 @@ describe("the floor the configuration may widen", () => {
   });
 
   it("raises a negative request to the floor", () => {
-    expect(resolveInterval(-1_000)).toBe(MIN_INTERVAL_MS);
+    expect(resolveInterval(-1000)).toBe(MIN_INTERVAL_MS);
   });
 
   it("falls back to the floor when nothing is requested", () => {

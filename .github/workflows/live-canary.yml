@@ -1,0 +1,88 @@
+# Nightly canary against the real Ashby boards.
+#
+# The unit tests run against generated JSON fixtures, so they cannot detect that
+# Ashby renamed a field or changed a shape: the day it does, they stay
+# green while the published server is broken for everyone. This job is the only
+# thing that notices, and it opens an issue when it fails.
+#
+# It is deliberately separate from CI: it depends on a third-party service, so a
+# failure here means "the API moved", never "this pull request is bad".
+
+name: Live canary
+
+on:
+  schedule:
+    # 03:43 UTC, an hour no neighbour occupies.
+    - cron: "43 3 * * *"
+  workflow_dispatch:
+
+# A single run at a time, so a slow night cannot overlap with the next one.
+concurrency:
+  group: live-canary
+  cancel-in-progress: false
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Needed to open the issue that reports a broken contract.
+      issues: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Run the live canary
+        env:
+          ASHBY_LIVE: "1"
+        run: npm run test:live
+
+      - name: Report a broken canary
+        if: failure()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = "Live canary failing: Ashby may have changed";
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              "The nightly live canary failed. Either Ashby changed the shapes this server reads,",
+              "or it was unreachable from the runner.",
+              "",
+              `Run: ${runUrl}`,
+              "",
+              "The assertion messages name the field or behaviour that moved. Fixing one means editing",
+              "`src/ashby/board.ts`, regenerating the corpus so the unit tests cover the new",
+              "shape, and releasing a patch version.",
+              "",
+              "One check deserves special attention: the suite re-reads the robots file of the host",
+              "it queries before asking it anything. If that one fails, the site has changed what it",
+              "allows, and the answer is to stop reading it rather than to fix a parser.",
+            ].join("\n");
+
+            // Reuse the open issue rather than filing one every night.
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: "live-canary",
+            });
+
+            if (existing.data.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.data[0].number,
+                body: `Still failing as of ${new Date().toISOString()}. ${runUrl}`,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ["live-canary"],
+              });
+            }

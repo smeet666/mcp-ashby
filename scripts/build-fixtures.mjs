@@ -10,6 +10,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import process from "node:process";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, "..", "test", "fixtures");
@@ -100,7 +101,7 @@ const job = (n, over = {}) => ({
   descriptionPlain: `An invented posting, number ${n}.`,
   compensation: tiered([
     tier(null, "$100K – $120K", [
-      component("Salary", [100000, 120000], "USD", "1 YEAR", "$100K – $120K"),
+      component("Salary", [100_000, 120_000], "USD", "1 YEAR", "$100K – $120K"),
     ]),
   ]),
   ...over,
@@ -122,7 +123,7 @@ const shapes = [
     title: "Posting promising equity without an amount",
     compensation: tiered([
       tier("Zone A", "$90K – $95K • Offers Equity", [
-        component("Salary", [90000, 95000], "USD", "1 YEAR", "$90K – $95K"),
+        component("Salary", [90_000, 95_000], "USD", "1 YEAR", "$90K – $95K"),
         component("EquityPercentage", [null, null], null, "NONE", "Offers Equity"),
         component("EquityCashValue", [null, null], "USD", "1 YEAR", "Offers Equity"),
       ]),
@@ -140,7 +141,7 @@ const shapes = [
   job(5, {
     title: "Posting on a single amount",
     compensation: tiered([
-      tier(null, "€110K", [component("Salary", [110000, 110000], "EUR", "1 YEAR", "€110K")]),
+      tier(null, "€110K", [component("Salary", [110_000, 110_000], "EUR", "1 YEAR", "€110K")]),
     ]),
   }),
   job(6, {

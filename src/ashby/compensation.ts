@@ -122,7 +122,7 @@ export function comparePay(
         }
       }
     }
-    if (!carries && !onThisPeriod) {
+    if (!(carries || onThisPeriod)) {
       withoutComponent += 1;
     }
   }

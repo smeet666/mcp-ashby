@@ -241,7 +241,7 @@ export function clientWith(fake: FakeFetch, extra: Record<string, unknown> = {})
 
 export function httpOptions(fake: FakeFetch, extra: Record<string, unknown> = {}): HttpOptions {
   return {
-    timeoutMs: 5_000,
+    timeoutMs: 5000,
     userAgent: "mcp-ashby-tests/0.1.0 (+https://github.com/smeet666/mcp-ashby)",
     fetchImpl: fake.fetchImpl,
     maxBodyBytes: 1_000_000,

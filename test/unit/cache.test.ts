@@ -36,13 +36,13 @@ describe("what the cache hands back", () => {
     const cache = new Cache<string>(60_000, 10);
 
     cache.set("ashby", "first", 'W/"v1"');
-    vi.setSystemTime(EPOCH + 5_000);
+    vi.setSystemTime(EPOCH + 5000);
     cache.set("ashby", "second", 'W/"v2"');
 
     const entry = cache.get("ashby");
     expect(entry?.value).toBe("second");
     expect(entry?.etag).toBe('W/"v2"');
-    expect(entry?.storedAt).toBe(EPOCH + 5_000);
+    expect(entry?.storedAt).toBe(EPOCH + 5000);
   });
 
   it("stores an absence the way it stores a value", () => {

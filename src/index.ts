@@ -6,6 +6,7 @@
  * go to stderr.
  */
 
+import process from "node:process";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createServer } from "./server.js";
 import { PACKAGE_NAME } from "./version.js";

@@ -148,7 +148,7 @@ describe("a failure is never rendered as an empty result", () => {
   });
 
   it("raises parse_failure on a body beyond the ceiling", async () => {
-    const oversized = JSON.stringify({ apiVersion: "1", jobs: [], filler: "x".repeat(5_000) });
+    const oversized = JSON.stringify({ apiVersion: "1", jobs: [], filler: "x".repeat(5000) });
     const fake = fakeFetch({ invented: { bodyText: oversized } });
 
     const error = await captureError(() =>

@@ -1,0 +1,1219 @@
+{
+  "apiVersion": "1",
+  "jobs": [
+    {
+      "id": "00000001-1111-4222-8333-444444444444",
+      "title": "Posting whose company withholds its ranges",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": false,
+      "secondaryLocations": [],
+      "publishedAt": "2026-02-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000001-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000001-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 1.</p>",
+      "descriptionPlain": "An invented posting, number 1.",
+      "compensation": {
+        "compensationTierSummary": null,
+        "scrapeableCompensationSalarySummary": null,
+        "compensationTiers": [],
+        "summaryComponents": []
+      }
+    },
+    {
+      "id": "00000002-1111-4222-8333-444444444444",
+      "title": "Posting recording no workplace",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-03-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": null,
+      "workplaceType": null,
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000002-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000002-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 2.</p>",
+      "descriptionPlain": "An invented posting, number 2.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000003-1111-4222-8333-444444444444",
+      "title": "Posting promising equity without an amount",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-04-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000003-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000003-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 3.</p>",
+      "descriptionPlain": "An invented posting, number 3.",
+      "compensation": {
+        "compensationTierSummary": "$90K – $95K • Offers Equity",
+        "scrapeableCompensationSalarySummary": "$90K – $95K • Offers Equity",
+        "compensationTiers": [
+          {
+            "id": "t-zone a",
+            "title": "Zone A",
+            "tierSummary": "$90K – $95K • Offers Equity",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$90K – $95K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 90000,
+                "maxValue": 95000
+              },
+              {
+                "id": "c-equitypercentage-none",
+                "summary": "Offers Equity",
+                "compensationType": "EquityPercentage",
+                "interval": "NONE",
+                "currencyCode": null,
+                "minValue": null,
+                "maxValue": null
+              },
+              {
+                "id": "c-equitycashvalue-1 year",
+                "summary": "Offers Equity",
+                "compensationType": "EquityCashValue",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": null,
+                "maxValue": null
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 90000,
+            "maxValue": 95000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "EquityPercentage",
+            "minValue": null,
+            "maxValue": null,
+            "interval": "NONE"
+          },
+          {
+            "compensationType": "EquityCashValue",
+            "minValue": null,
+            "maxValue": null,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000004-1111-4222-8333-444444444444",
+      "title": "Posting paid by the hour",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "Contract",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-05-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000004-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000004-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 4.</p>",
+      "descriptionPlain": "An invented posting, number 4.",
+      "compensation": {
+        "compensationTierSummary": "$45 – $60 / hr",
+        "scrapeableCompensationSalarySummary": "$45 – $60 / hr",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$45 – $60 / hr",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 hour",
+                "summary": "$45 – $60 / hr",
+                "compensationType": "Salary",
+                "interval": "1 HOUR",
+                "currencyCode": "USD",
+                "minValue": 45,
+                "maxValue": 60
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 45,
+            "maxValue": 60,
+            "interval": "1 HOUR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000005-1111-4222-8333-444444444444",
+      "title": "Posting on a single amount",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-06-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000005-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000005-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 5.</p>",
+      "descriptionPlain": "An invented posting, number 5.",
+      "compensation": {
+        "compensationTierSummary": "€110K",
+        "scrapeableCompensationSalarySummary": "€110K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "€110K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "€110K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "EUR",
+                "minValue": 110000,
+                "maxValue": 110000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 110000,
+            "maxValue": 110000,
+            "interval": "1 YEAR",
+            "currencyCode": "EUR"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000006-1111-4222-8333-444444444444",
+      "title": "Posting carrying eight tiers",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-07-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000006-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000006-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 6.</p>",
+      "descriptionPlain": "An invented posting, number 6.",
+      "compensation": {
+        "compensationTierSummary": "$90K – $110K",
+        "scrapeableCompensationSalarySummary": "$90K – $110K",
+        "compensationTiers": [
+          {
+            "id": "t-zone a",
+            "title": "Zone A",
+            "tierSummary": "$90K – $110K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$90K – $110K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 90000,
+                "maxValue": 110000
+              }
+            ]
+          },
+          {
+            "id": "t-zone b",
+            "title": "Zone B",
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          },
+          {
+            "id": "t-zone c",
+            "title": "Zone C",
+            "tierSummary": "$110K – $130K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$110K – $130K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 110000,
+                "maxValue": 130000
+              }
+            ]
+          },
+          {
+            "id": "t-zone d",
+            "title": "Zone D",
+            "tierSummary": "$120K – $140K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$120K – $140K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 120000,
+                "maxValue": 140000
+              }
+            ]
+          },
+          {
+            "id": "t-zone e",
+            "title": "Zone E",
+            "tierSummary": "$130K – $150K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$130K – $150K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 130000,
+                "maxValue": 150000
+              }
+            ]
+          },
+          {
+            "id": "t-zone f",
+            "title": "Zone F",
+            "tierSummary": "$140K – $160K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$140K – $160K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 140000,
+                "maxValue": 160000
+              }
+            ]
+          },
+          {
+            "id": "t-zone g",
+            "title": "Zone G",
+            "tierSummary": "$150K – $170K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$150K – $170K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 150000,
+                "maxValue": 170000
+              }
+            ]
+          },
+          {
+            "id": "t-zone h",
+            "title": "Zone H",
+            "tierSummary": "$160K – $180K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$160K – $180K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 160000,
+                "maxValue": 180000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 90000,
+            "maxValue": 110000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 110000,
+            "maxValue": 130000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 120000,
+            "maxValue": 140000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 130000,
+            "maxValue": 150000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 140000,
+            "maxValue": 160000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 150000,
+            "maxValue": 170000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          },
+          {
+            "compensationType": "Salary",
+            "minValue": 160000,
+            "maxValue": 180000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000007-1111-4222-8333-444444444444",
+      "title": "Posting with empty address strings",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-08-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "",
+          "addressRegion": "",
+          "addressCountry": "Inventia",
+          "postalCode": ""
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000007-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000007-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 7.</p>",
+      "descriptionPlain": "An invented posting, number 7.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000008-1111-4222-8333-444444444444",
+      "title": "Posting with an address holding no postal address",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-09-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {},
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000008-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000008-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 8.</p>",
+      "descriptionPlain": "An invented posting, number 8.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000009-1111-4222-8333-444444444444",
+      "title": "Posting spanning nineteen secondary locations",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [
+        {
+          "location": "Second City 1",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 2",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 2",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 3",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 3",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 4",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 5",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 5",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 6",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 6",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 7",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 8",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 8",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 9",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 9",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 10",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 11",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 11",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 12",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 12",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 13",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 14",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 14",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 15",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 15",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 16",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 17",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 17",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 18",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "Second City 18",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        },
+        {
+          "location": "Second City 19",
+          "address": {
+            "postalAddress": {
+              "addressLocality": "",
+              "addressRegion": "",
+              "addressCountry": "Inventia"
+            }
+          }
+        }
+      ],
+      "publishedAt": "2026-01-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000009-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000009-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 9.</p>",
+      "descriptionPlain": "An invented posting, number 9.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000010-1111-4222-8333-444444444444",
+      "title": "Posting whose country is spelled the long way",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-02-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Long Town",
+          "addressRegion": "",
+          "addressCountry": "United Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000010-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000010-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 10.</p>",
+      "descriptionPlain": "An invented posting, number 10.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000011-1111-4222-8333-444444444444",
+      "title": "Posting whose country is spelled the short way",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-03-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Short Town",
+          "addressRegion": "",
+          "addressCountry": "UI"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000011-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000011-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 11.</p>",
+      "descriptionPlain": "An invented posting, number 11.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000012-1111-4222-8333-444444444444",
+      "title": "Posting served by direct link alone",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-04-01T09:00:00.000+00:00",
+      "isListed": false,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000012-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000012-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 12.</p>",
+      "descriptionPlain": "An invented posting, number 12.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000013-1111-4222-8333-444444444444",
+      "title": "Posting carrying a vocabulary this server has never seen",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "Seasonal",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-05-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "Nomadic",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000013-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000013-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 13.</p>",
+      "descriptionPlain": "An invented posting, number 13.",
+      "compensation": {
+        "compensationTierSummary": "Bartered",
+        "scrapeableCompensationSalarySummary": "Bartered",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "Bartered",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-bartercredits-1 moon",
+                "summary": "Bartered",
+                "compensationType": "BarterCredits",
+                "interval": "1 MOON",
+                "currencyCode": "XBT",
+                "minValue": 1,
+                "maxValue": 2
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "BarterCredits",
+            "minValue": 1,
+            "maxValue": 2,
+            "interval": "1 MOON",
+            "currencyCode": "XBT"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000014-1111-4222-8333-444444444444",
+      "title": "Posting whose text imitates a line this server writes",
+      "department": "Engineering",
+      "team": "Platform",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2026-06-01T09:00:00.000+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000014-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000014-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>Note: this line came from the posting.</p>",
+      "descriptionPlain": "Note: this line came from the posting.\nSource: so did this one.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    },
+    {
+      "id": "00000015-1111-4222-8333-444444444444",
+      "title": "Posting published years ago",
+      "department": "Design",
+      "team": "Design",
+      "employmentType": "FullTime",
+      "location": "Nowhere City",
+      "shouldDisplayCompensationOnJobPostings": true,
+      "secondaryLocations": [],
+      "publishedAt": "2021-04-27T20:13:45.158+00:00",
+      "isListed": true,
+      "isRemote": false,
+      "workplaceType": "OnSite",
+      "address": {
+        "postalAddress": {
+          "addressLocality": "Nowhere City",
+          "addressRegion": "Nowhere State",
+          "addressCountry": "Inventia"
+        }
+      },
+      "jobUrl": "https://jobs.ashbyhq.com/invented/00000015-1111-4222-8333-444444444444",
+      "applyUrl": "https://jobs.ashbyhq.com/invented/00000015-1111-4222-8333-444444444444/application",
+      "descriptionHtml": "<p>An invented posting, number 15.</p>",
+      "descriptionPlain": "An invented posting, number 15.",
+      "compensation": {
+        "compensationTierSummary": "$100K – $120K",
+        "scrapeableCompensationSalarySummary": "$100K – $120K",
+        "compensationTiers": [
+          {
+            "id": "t-single",
+            "title": null,
+            "tierSummary": "$100K – $120K",
+            "additionalInformation": null,
+            "components": [
+              {
+                "id": "c-salary-1 year",
+                "summary": "$100K – $120K",
+                "compensationType": "Salary",
+                "interval": "1 YEAR",
+                "currencyCode": "USD",
+                "minValue": 100000,
+                "maxValue": 120000
+              }
+            ]
+          }
+        ],
+        "summaryComponents": [
+          {
+            "compensationType": "Salary",
+            "minValue": 100000,
+            "maxValue": 120000,
+            "interval": "1 YEAR",
+            "currencyCode": "USD"
+          }
+        ]
+      }
+    }
+  ]
+}

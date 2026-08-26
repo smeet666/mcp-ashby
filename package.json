@@ -1,6 +1,6 @@
 {
   "name": "mcp-ashby",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "MCP server for public Ashby job boards. Resolve a company to its board, search its openings, read one posting and its pay. No API key required.",
   "keywords": [
     "mcp",

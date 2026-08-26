@@ -52,6 +52,23 @@ Claude Desktop, `claude_desktop_config.json`:
 }
 ```
 
+### With Docker
+
+```json
+{
+  "mcpServers": {
+    "ashby": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "ghcr.io/smeet666/mcp-ashby:2.0.0"]
+    }
+  }
+}
+```
+
+`-i` keeps stdin open, which is where the protocol travels, and no `-t` is
+passed: a TTY rewrites the stream and breaks it. The container needs outbound
+HTTPS to `api.ashbyhq.com`, and nothing else: no volume, no port, no environment variable, no credential.
+
 ## The tools
 
 ### `resolve_board`
@@ -221,6 +238,24 @@ Claude Desktop, `claude_desktop_config.json` :
   }
 }
 ```
+
+### Avec Docker
+
+```json
+{
+  "mcpServers": {
+    "ashby": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "ghcr.io/smeet666/mcp-ashby:2.0.0"]
+    }
+  }
+}
+```
+
+`-i` garde l'entrée standard ouverte, qui est le canal du protocole, et aucun
+`-t` n'est passé : un terminal réécrit le flux et le casse. Le conteneur a besoin
+d'un accès HTTPS sortant vers `api.ashbyhq.com`, et de rien d'autre :
+aucun volume, aucun port, aucune variable d'environnement, aucun identifiant.
 
 ## Les outils
 

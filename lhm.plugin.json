@@ -1,0 +1,1364 @@
+{
+  "author": "Damien Bouissou",
+  "authorUrl": "https://github.com/smeet666",
+  "description": "MCP server for public Ashby job boards. Resolve a company to its board, search its openings, read one posting and its pay. No API key required.",
+  "homepage": "https://github.com/smeet666/mcp-ashby#readme",
+  "identifier": "smeet666-mcp-ashby",
+  "name": "mcp-ashby",
+  "prompts": [],
+  "resources": [],
+  "tags": [
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "ashby",
+    "jobs",
+    "job-search",
+    "job-board",
+    "ats",
+    "hiring",
+    "careers",
+    "compensation",
+    "no-api-key"
+  ],
+  "tools": [
+    {
+      "name": "resolve_board",
+      "title": "Resolve company names to Ashby boards",
+      "description": "Turn a company name into the token that addresses its Ashby job board, and report every form that answered. search_jobs does this on its own, so call this when a name returns nothing and you want to see the spellings that were tried.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A company name, or an Ashby board token you already know."
+          }
+        },
+        "required": ["name"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string"
+          },
+          "found": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "board": {
+                  "type": "string",
+                  "description": "The token that answered. Ashby ignores case and echoes the spelling it was given, so this is no canonical spelling."
+                },
+                "job_count": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "publishes": {
+                  "type": "boolean",
+                  "description": "False when the board exists and publishes nothing."
+                }
+              },
+              "required": ["board", "job_count", "publishes"],
+              "additionalProperties": false
+            }
+          },
+          "tried": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The forms actually sent, in order."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["input", "found", "tried", "notes"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "search_jobs",
+      "title": "Search postings at named companies",
+      "description": "Search the open postings of named companies on Ashby. Ashby publishes no index across its customers, so companies are required. Every filter runs here rather than at the source, and the answer reports how many postings declared nothing about a field it filtered on. Rows carry no description: read one posting with get_job.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "companies": {
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Company names or Ashby board tokens."
+            },
+            "description": "Company names or board tokens, one to 10. Each costs a request and a whole board, which is why 5 at a time is the comfortable number."
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Words to look for."
+          },
+          "search_in": {
+            "default": "title",
+            "description": "Where query is looked for. Descriptions run to thousands of characters each.",
+            "type": "string",
+            "enum": ["title", "title_and_description"]
+          },
+          "department": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Departments as the board spells them."
+                },
+                "description": "A list of departments as the board spells them, one to 10 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Departments as the board spells them."
+              }
+            ]
+          },
+          "team": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Teams as the board spells them."
+                },
+                "description": "A list of teams as the board spells them, one to 10 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Teams as the board spells them."
+              }
+            ]
+          },
+          "employment_type": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 6,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Employment types."
+                },
+                "description": "A list of employment types, one to 6 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Employment types."
+              }
+            ]
+          },
+          "workplace_type": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Workplace types."
+                },
+                "description": "A list of workplace types, one to 4 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Workplace types."
+              }
+            ]
+          },
+          "is_remote": {
+            "description": "Keeps only postings that declare it. Postings recording nothing are counted in undeclared rather than treated as on site.",
+            "type": "boolean"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "A country as the board spells it, as in USA or United Kingdom."
+                },
+                "description": "A list of countries as the board spells them, one to 10 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "A country as the board spells it, as in USA or United Kingdom."
+              }
+            ]
+          },
+          "location_contains": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Part of a location line."
+          },
+          "published_after": {
+            "type": "string",
+            "minLength": 1,
+            "description": "An ISO 8601 date."
+          },
+          "has_compensation": {
+            "description": "Keeps only postings whose company publishes a pay range.",
+            "type": "boolean"
+          },
+          "salary_min": {
+            "type": "number",
+            "minimum": 0,
+            "description": "A floor for the salary component."
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Za-z]{3}$",
+            "description": "A three-letter currency code, as in EUR or USD."
+          },
+          "salary_interval": {
+            "default": "1 YEAR",
+            "description": "The period salary_min belongs to, 1 YEAR unless named. An hourly amount is never weighed against a yearly floor.",
+            "type": "string",
+            "minLength": 1
+          },
+          "sort": {
+            "default": "published_desc",
+            "type": "string",
+            "enum": ["published_desc", "published_asc", "title"]
+          },
+          "limit": {
+            "default": 20,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "How many postings to return."
+          },
+          "offset": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000,
+            "description": "How many postings to skip."
+          }
+        },
+        "required": ["companies"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "total_on_board": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Postings the boards read hold, all of them."
+          },
+          "total_matched": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Postings the criteria kept."
+          },
+          "returned": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991,
+            "description": "Postings in this answer, after limit and offset."
+          },
+          "jobs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "board": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "department": {
+                  "type": "string"
+                },
+                "team": {
+                  "type": "string"
+                },
+                "employment_type": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "country": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "secondary_location_count": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "workplace_type": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Null when the company records none, which is never the same as on site."
+                },
+                "is_remote": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "is_listed": {
+                  "type": "boolean",
+                  "description": "False marks a posting Ashby serves by direct link alone rather than on the board."
+                },
+                "published_at": {
+                  "type": "string",
+                  "description": "ISO 8601 with the offset Ashby publishes."
+                },
+                "compensation_summary": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Null when the company withholds its pay ranges, which is never zero."
+                },
+                "job_url": {
+                  "type": "string"
+                },
+                "apply_url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "board",
+                "id",
+                "title",
+                "department",
+                "team",
+                "employment_type",
+                "location",
+                "country",
+                "secondary_location_count",
+                "workplace_type",
+                "is_remote",
+                "is_listed",
+                "published_at",
+                "compensation_summary",
+                "job_url",
+                "apply_url"
+              ],
+              "additionalProperties": false
+            },
+            "description": "No descriptions, at any limit."
+          },
+          "per_company": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "input": {
+                  "type": "string"
+                },
+                "board": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["read", "unresolved", "empty", "failed"],
+                  "description": "A company read, one whose token was not found, one publishing nothing and one that failed are four different answers."
+                },
+                "read": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Postings the board holds, before the filters applied here. Null when nothing was read, since zero would read as a board with nothing on it."
+                },
+                "matched": {
+                  "anyOf": [
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Postings kept after them."
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": ["input", "board", "status", "read", "matched"],
+              "additionalProperties": false
+            }
+          },
+          "filters_applied": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {}
+          },
+          "undeclared": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "description": "Postings a criterion could say nothing about, counted per field. A posting that records no workplace is not a posting on site."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "total_on_board",
+          "total_matched",
+          "returned",
+          "jobs",
+          "per_company",
+          "filters_applied",
+          "undeclared",
+          "notes"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_job",
+      "title": "Read one posting",
+      "description": "Read one Ashby posting in full: its locations, its description and the pay ranges its company published. Ashby addresses a posting by board and identifier, both of which search_jobs returns.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A company name, or an Ashby board token."
+          },
+          "job_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The identifier search_jobs returned for this posting."
+          },
+          "description": {
+            "default": "plain",
+            "description": "The description runs to thousands of characters. html is the company's own markup, unrewritten.",
+            "type": "string",
+            "enum": ["plain", "html", "none"]
+          },
+          "include_compensation": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": ["board", "job_id"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "team": {
+            "type": "string"
+          },
+          "employment_type": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "The location as the company wrote it, free text with no taxonomy."
+              },
+              "locality": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "region": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "country": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "As the board publishes it, European Union included. No country code, and never corrected: one board writes USA where another writes United States."
+              }
+            },
+            "required": ["label", "locality", "region", "country"],
+            "additionalProperties": false
+          },
+          "workplace_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null when the company records none, which is never the same as on site."
+          },
+          "is_remote": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "is_listed": {
+            "type": "boolean",
+            "description": "False marks a posting Ashby serves by direct link alone rather than on the board."
+          },
+          "published_at": {
+            "type": "string",
+            "description": "ISO 8601 with the offset Ashby publishes."
+          },
+          "compensation_summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null when the company withholds its pay ranges, which is never zero."
+          },
+          "job_url": {
+            "type": "string"
+          },
+          "apply_url": {
+            "type": "string"
+          },
+          "secondary_locations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "description": "The location as the company wrote it, free text with no taxonomy."
+                },
+                "locality": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "region": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "country": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "As the board publishes it, European Union included. No country code, and never corrected: one board writes USA where another writes United States."
+                }
+              },
+              "required": ["label", "locality", "region", "country"],
+              "additionalProperties": false
+            }
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "format": {
+                    "type": "string",
+                    "enum": ["plain", "html"]
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": ["format", "text"],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null when the caller asked for no description."
+          },
+          "compensation": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "published": {
+                        "type": "boolean",
+                        "const": true
+                      },
+                      "summary": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "tiers": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ],
+                              "description": "Names a zone or a level, and is null on most tiers."
+                            },
+                            "summary": {
+                              "type": "string"
+                            },
+                            "additional_information": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "components": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "description": "Salary, EquityCashValue, EquityPercentage, Commission, Bonus, or a value beyond them."
+                                  },
+                                  "min": {
+                                    "anyOf": [
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ],
+                                    "description": "Null when the company promises the component without naming an amount."
+                                  },
+                                  "max": {
+                                    "anyOf": [
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
+                                  "currency": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ],
+                                    "description": "Null on a percentage of equity, which has no currency. Never converted."
+                                  },
+                                  "interval": {
+                                    "type": "string",
+                                    "description": "The period the amounts belong to, as Ashby writes it: 1 YEAR, 1 MONTH, 1 HOUR, NONE. Never annualised."
+                                  },
+                                  "summary": {
+                                    "type": "string",
+                                    "description": "The line the company wrote for this component."
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "min",
+                                  "max",
+                                  "currency",
+                                  "interval",
+                                  "summary"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": ["title", "summary", "additional_information", "components"],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": ["published", "summary", "tiers"],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "published": {
+                        "type": "boolean",
+                        "const": false
+                      },
+                      "summary": {
+                        "type": "null"
+                      },
+                      "tiers": {
+                        "type": "array",
+                        "items": []
+                      }
+                    },
+                    "required": ["published", "summary", "tiers"],
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Null when the caller asked for no compensation, which states nothing about the company."
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "site": {
+                "type": "string",
+                "const": "Ashby"
+              },
+              "retrieved_from": {
+                "type": "string"
+              }
+            },
+            "required": ["site", "retrieved_from"],
+            "additionalProperties": false
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "board",
+          "id",
+          "title",
+          "department",
+          "team",
+          "employment_type",
+          "location",
+          "workplace_type",
+          "is_remote",
+          "is_listed",
+          "published_at",
+          "compensation_summary",
+          "job_url",
+          "apply_url",
+          "secondary_locations",
+          "description",
+          "compensation",
+          "source",
+          "notes"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "list_filter_values",
+      "title": "List a board's filter wordings",
+      "description": "List the words one Ashby board actually uses, with how many postings carry each, and how many declare nothing. Every board keeps its own departments and teams, so a filter written from another board's vocabulary narrows to nothing.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A company name, or an Ashby board token."
+          },
+          "facet": {
+            "default": "all",
+            "type": "string",
+            "enum": [
+              "departments",
+              "teams",
+              "locations",
+              "countries",
+              "employment_types",
+              "workplace_types",
+              "all"
+            ]
+          }
+        },
+        "required": ["board"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string"
+          },
+          "total_jobs": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          },
+          "facets": {
+            "type": "object",
+            "properties": {
+              "departments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["value", "count"],
+                  "additionalProperties": false
+                }
+              },
+              "teams": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["value", "count"],
+                  "additionalProperties": false
+                }
+              },
+              "locations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["value", "count"],
+                  "additionalProperties": false
+                }
+              },
+              "countries": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["value", "count"],
+                  "additionalProperties": false
+                }
+              },
+              "employment_types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["value", "count"],
+                  "additionalProperties": false
+                }
+              },
+              "workplace_types": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  },
+                  "required": ["value", "count"],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "undeclared": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            },
+            "description": "Postings a criterion could say nothing about, counted per field. A posting that records no workplace is not a posting on site."
+          },
+          "sibling_spellings": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Spellings on this board that name what looks like one place, so a caller asks for both rather than picking one."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["board", "total_jobs", "facets", "undeclared", "sibling_spellings", "notes"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "compare_compensation",
+      "title": "Compare published pay on one board",
+      "description": "Put the pay ranges of one Ashby board side by side, one component at a time and one period at a time. Nothing is converted between currencies, summed across components or averaged: a third of the postings publish no range at all, and they are named rather than dropped.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A company name, or an Ashby board token."
+          },
+          "job_ids": {
+            "minItems": 1,
+            "maxItems": 50,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Posting identifiers search_jobs returned."
+            },
+            "description": "A list of posting identifiers search_jobs returned, one to 50 of them."
+          },
+          "department": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Departments as the board spells them."
+                },
+                "description": "A list of departments as the board spells them, one to 10 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Departments as the board spells them."
+              }
+            ]
+          },
+          "team": {
+            "anyOf": [
+              {
+                "minItems": 1,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Teams as the board spells them."
+                },
+                "description": "A list of teams as the board spells them, one to 10 of them."
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "description": "Teams as the board spells them."
+              }
+            ]
+          },
+          "query": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Words to look for in the titles."
+          },
+          "component": {
+            "default": "Salary",
+            "description": "One component at a time: a share of capital and a salary do not add up.",
+            "type": "string",
+            "enum": ["Salary", "EquityCashValue", "EquityPercentage", "Commission", "Bonus"]
+          },
+          "interval": {
+            "default": "1 YEAR",
+            "description": "The period compared, 1 YEAR unless named. Postings on another period are listed apart, unconverted.",
+            "type": "string",
+            "minLength": 1
+          },
+          "limit": {
+            "default": 25,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "How many postings to compare."
+          }
+        },
+        "required": ["board"],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "board": {
+            "type": "string"
+          },
+          "component": {
+            "type": "string"
+          },
+          "interval": {
+            "type": "string"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "job_id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "tier_title": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "description": "Which tier the amounts belong to, since one posting carries up to eight."
+                },
+                "min": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "max": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "currency": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": ["job_id", "title", "tier_title", "min", "max", "currency"],
+              "additionalProperties": false
+            }
+          },
+          "currencies_present": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Named, because rows in different currencies do not rank against each other."
+          },
+          "not_published": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "job_id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": ["job_id", "title"],
+              "additionalProperties": false
+            },
+            "description": "Postings whose company publishes no range, named rather than dropped."
+          },
+          "other_intervals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "job_id": {
+                  "type": "string"
+                },
+                "interval": {
+                  "type": "string"
+                }
+              },
+              "required": ["job_id", "interval"],
+              "additionalProperties": false
+            },
+            "description": "Postings on another period, left unconverted."
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "board",
+          "component",
+          "interval",
+          "rows",
+          "currencies_present",
+          "not_published",
+          "other_intervals",
+          "notes"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ],
+  "version": "2.0.1"
+}

@@ -143,7 +143,7 @@ export async function runSearchJobs(client: Client, args: SearchJobsArgs): Promi
 
     const lines = [
       `${rows.length} of ${totalOnBoard} postings match, ${page.length} shown.`,
-      ...page.map((row) => `${row.title} — ${row.location} (${row.board})`),
+      ...page.map((row) => `${row.title} · ${row.location} (${row.board})`),
       ...notes,
     ];
 

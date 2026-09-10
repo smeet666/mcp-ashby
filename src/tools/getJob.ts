@@ -74,7 +74,7 @@ export async function runGetJob(client: Client, args: GetJobArgs): Promise<CallT
 
     const payload = { ...record, notes };
     const lines = [
-      `${record.title} — ${record.location.label} (${found.board})`,
+      `${record.title} · ${record.location.label} (${found.board})`,
       record.compensation?.published === true && record.compensation.summary !== null
         ? record.compensation.summary
         : "",

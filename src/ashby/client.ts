@@ -64,7 +64,7 @@ export class Client {
     }
 
     const pending = this.inFlight.get(url);
-    if (pending) {
+    if (pending !== undefined) {
       return { value: await pending, cached: true };
     }
 

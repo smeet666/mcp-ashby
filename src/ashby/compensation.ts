@@ -129,7 +129,7 @@ export function comparePay(
 
   return {
     rows,
-    currencies_present: [...currencies].sort(),
+    currencies_present: [...currencies].sort((a, b) => Number(a > b) - Number(a < b)),
     not_published: notPublished,
     other_intervals: otherIntervals,
     without_component: withoutComponent,

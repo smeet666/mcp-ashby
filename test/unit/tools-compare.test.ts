@@ -85,7 +85,11 @@ describe("what the comparison refuses to do", () => {
       { board: "invented", limit: 100 },
     ).run();
 
-    expect([...(structured(result).currencies_present as string[])].sort()).toEqual(["EUR", "USD"]);
+    expect(
+      [...(structured(result).currencies_present as string[])].sort(
+        (a, b) => Number(a > b) - Number(a < b),
+      ),
+    ).toEqual(["EUR", "USD"]);
   });
 
   it("names the postings whose company publishes nothing rather than dropping them", async () => {

@@ -90,7 +90,9 @@ describe("what a facet leaves out", () => {
   it("returns every facet asked for", () => {
     const facets = countFacets(wideJobs, want("departments", "countries"));
 
-    expect(Object.keys(facets.facets as object).sort()).toEqual(["countries", "departments"]);
+    expect(
+      Object.keys(facets.facets as object).sort((a, b) => Number(a > b) - Number(a < b)),
+    ).toEqual(["countries", "departments"]);
   });
 });
 

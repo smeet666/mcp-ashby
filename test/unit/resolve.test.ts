@@ -22,7 +22,7 @@ describe("the ladder of spellings", () => {
   });
 
   it("carries the name stripped of its punctuation", () => {
-    expect(boardForms("Eleven Labs, Inc.", 4).some((form) => form === "elevenlabsinc")).toBe(true);
+    expect(boardForms("Eleven Labs, Inc.", 4).includes("elevenlabsinc")).toBe(true);
   });
 
   it("holds no form twice", () => {

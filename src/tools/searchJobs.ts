@@ -233,7 +233,7 @@ function refuseUnknownValues(
     return;
   }
   const [field, missing] = fields[0] as [string, Set<string>];
-  const carried = [...(present[field] ?? [])].sort();
+  const carried = [...(present[field] ?? [])].sort((a, b) => Number(a > b) - Number(a < b));
   throw invalidInput(
     `The boards read carry no ${field} spelled ${[...missing].join(", ")}. Every board keeps its own wording, and ${boardsRead.map((o) => o.board).join(", ")} carries: ${carried.join(", ")}.`,
     carried,

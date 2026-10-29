@@ -160,7 +160,9 @@ describe("comparing what several postings pay", () => {
   });
 
   it("names every currency present, keeping them apart", () => {
-    expect([...comparison().currencies_present].sort()).toEqual(["EUR", "USD"]);
+    expect(
+      [...comparison().currencies_present].sort((a, b) => Number(a > b) - Number(a < b)),
+    ).toEqual(["EUR", "USD"]);
   });
 
   it("converts nothing between currencies", () => {

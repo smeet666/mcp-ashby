@@ -46,7 +46,11 @@ describe("the vocabulary of one board", () => {
   it("counts every facet when none is named", async () => {
     const result = await list({ invented: wideBoard }, { board: "invented" }).run();
 
-    expect(Object.keys(structured(result).facets as object).sort()).toEqual([
+    expect(
+      Object.keys(structured(result).facets as object).sort(
+        (a, b) => Number(a > b) - Number(a < b),
+      ),
+    ).toEqual([
       "countries",
       "departments",
       "employment_types",
